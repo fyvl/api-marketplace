@@ -1,0 +1,17 @@
+{
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "vite build",
+        "dev": "vite"
+    },
+    "devDependencies": {
+        "@tailwindcss/vite": "^4.0.0",
+        "axios": "^1.7.4",
+        "concurrently": "^9.0.1",
+        "laravel-vite-plugin": "^1.2.0",
+        "tailwindcss": "^4.0.0",
+        "vite": "^6.0.11"
+    },
+    "packageManager": "yarn@3.5.1+sha512.8cd0e31bd60779ef4ca92b855fb3462c7ec35ce8b345752b7349a68239776417f46d41d79c8047242d9c93b48a1516f64c7444ebe747d9a02bf26868e6fa1f2b"
+}

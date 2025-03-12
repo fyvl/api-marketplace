@@ -1,0 +1,17 @@
+// vite.config.js
+import { defineConfig } from "file:///D:/cdgithub/api-marketplace/api-marketplace/.yarn/__virtual__/vite-virtual-015eafc266/0/cache/vite-npm-6.2.0-3ff3775afd-0f2b6232fe.zip/node_modules/vite/dist/node/index.js";
+import laravel from "file:///D:/cdgithub/api-marketplace/api-marketplace/.yarn/__virtual__/laravel-vite-plugin-virtual-31eefaf2b0/0/cache/laravel-vite-plugin-npm-1.2.0-01fbd3a3c6-439250406c.zip/node_modules/laravel-vite-plugin/dist/index.js";
+import tailwindcss from "file:///D:/cdgithub/api-marketplace/api-marketplace/.yarn/__virtual__/@tailwindcss-vite-virtual-7a91a4684e/0/cache/@tailwindcss-vite-npm-4.0.9-bbd486a90d-cd9c99b0c8.zip/node_modules/@tailwindcss/vite/dist/index.mjs";
+var vite_config_default = defineConfig({
+  plugins: [
+    laravel({
+      input: ["resources/css/app.css", "resources/js/app.js"],
+      refresh: true
+    }),
+    tailwindcss()
+  ]
+});
+export {
+  vite_config_default as default
+};
+//# sourceMappingURL=data:application/json;base64,ewogICJ2ZXJzaW9uIjogMywKICAic291cmNlcyI6IFsidml0ZS5jb25maWcuanMiXSwKICAic291cmNlUm9vdCI6ICJEOlxcY2RnaXRodWJcXGFwaS1tYXJrZXRwbGFjZVxcYXBpLW1hcmtldHBsYWNlXFwiLAogICJzb3VyY2VzQ29udGVudCI6IFsiY29uc3QgX192aXRlX2luamVjdGVkX29yaWdpbmFsX2Rpcm5hbWUgPSBcIkQ6XFxcXGNkZ2l0aHViXFxcXGFwaS1tYXJrZXRwbGFjZVxcXFxhcGktbWFya2V0cGxhY2VcIjtjb25zdCBfX3ZpdGVfaW5qZWN0ZWRfb3JpZ2luYWxfZmlsZW5hbWUgPSBcIkQ6XFxcXGNkZ2l0aHViXFxcXGFwaS1tYXJrZXRwbGFjZVxcXFxhcGktbWFya2V0cGxhY2VcXFxcdml0ZS5jb25maWcuanNcIjtjb25zdCBfX3ZpdGVfaW5qZWN0ZWRfb3JpZ2luYWxfaW1wb3J0X21ldGFfdXJsID0gXCJmaWxlOi8vL0Q6L2NkZ2l0aHViL2FwaS1tYXJrZXRwbGFjZS9hcGktbWFya2V0cGxhY2Uvdml0ZS5jb25maWcuanNcIjtpbXBvcnQgeyBkZWZpbmVDb25maWcgfSBmcm9tICd2aXRlJztcbmltcG9ydCBsYXJhdmVsIGZyb20gJ2xhcmF2ZWwtdml0ZS1wbHVnaW4nO1xuaW1wb3J0IHRhaWx3aW5kY3NzIGZyb20gJ0B0YWlsd2luZGNzcy92aXRlJztcblxuZXhwb3J0IGRlZmF1bHQgZGVmaW5lQ29uZmlnKHtcbiAgICBwbHVnaW5zOiBbXG4gICAgICAgIGxhcmF2ZWwoe1xuICAgICAgICAgICAgaW5wdXQ6IFsncmVzb3VyY2VzL2Nzcy9hcHAuY3NzJywgJ3Jlc291cmNlcy9qcy9hcHAuanMnXSxcbiAgICAgICAgICAgIHJlZnJlc2g6IHRydWUsXG4gICAgICAgIH0pLFxuICAgICAgICB0YWlsd2luZGNzcygpLFxuICAgIF0sXG59KTtcbiJdLAogICJtYXBwaW5ncyI6ICI7QUFBMlQsU0FBUyxvQkFBb0I7QUFDeFYsT0FBTyxhQUFhO0FBQ3BCLE9BQU8saUJBQWlCO0FBRXhCLElBQU8sc0JBQVEsYUFBYTtBQUFBLEVBQ3hCLFNBQVM7QUFBQSxJQUNMLFFBQVE7QUFBQSxNQUNKLE9BQU8sQ0FBQyx5QkFBeUIscUJBQXFCO0FBQUEsTUFDdEQsU0FBUztBQUFBLElBQ2IsQ0FBQztBQUFBLElBQ0QsWUFBWTtBQUFBLEVBQ2hCO0FBQ0osQ0FBQzsiLAogICJuYW1lcyI6IFtdCn0K
