@@ -64,6 +64,30 @@ export default function ApiListPage() {
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
   const [minRating, setMinRating] = useState<number>(0);
   
+  // Инициализация фильтров из URL-параметров при первом рендере
+  useEffect(() => {
+    const categoryParam = searchParams.get('category');
+    if (categoryParam) {
+      setSelectedCategories([categoryParam]);
+    }
+    
+    const typeParam = searchParams.get('type');
+    if (typeParam) {
+      setSelectedType(typeParam);
+    }
+    
+    const minPriceParam = searchParams.get('price_min');
+    const maxPriceParam = searchParams.get('price_max');
+    if (minPriceParam && maxPriceParam) {
+      setPriceRange([parseInt(minPriceParam), parseInt(maxPriceParam)]);
+    }
+    
+    const ratingParam = searchParams.get('min_rating');
+    if (ratingParam) {
+      setMinRating(parseFloat(ratingParam));
+    }
+  }, [searchParams]);
+
   // Загрузка API
   useEffect(() => {
     const fetchApis = async () => {
@@ -130,11 +154,21 @@ export default function ApiListPage() {
   };
   
   const handleCategoryChange = (category: string, checked: boolean) => {
+    let newSelectedCategories: string[];
+    
     if (checked) {
-      setSelectedCategories([...selectedCategories, category]);
+      newSelectedCategories = [...selectedCategories, category];
     } else {
-      setSelectedCategories(selectedCategories.filter(c => c !== category));
+      newSelectedCategories = selectedCategories.filter(c => c !== category);
     }
+    
+    setSelectedCategories(newSelectedCategories);
+    
+    // Обновляем URL параметры
+    const params = new URLSearchParams(searchParams);
+    params.delete('categories[]');
+    newSelectedCategories.forEach(cat => params.append('categories[]', cat));
+    setSearchParams(params);
   };
   
   const handleAddToCart = (apiId: number) => {
@@ -197,7 +231,17 @@ export default function ApiListPage() {
               <Label htmlFor="type" className="mb-2 block">Тип API</Label>
               <Select
                 value={selectedType}
-                onValueChange={setSelectedType}
+                onValueChange={(value) => {
+                  setSelectedType(value);
+                  // Обновляем URL параметры
+                  const params = new URLSearchParams(searchParams);
+                  if (value && value !== 'all') {
+                    params.set('type', value);
+                  } else {
+                    params.delete('type');
+                  }
+                  setSearchParams(params);
+                }}
               >
                 <SelectTrigger id="type">
                   <SelectValue placeholder="Выберите тип" />
@@ -221,7 +265,15 @@ export default function ApiListPage() {
                 min={0}
                 max={10000}
                 step={100}
-                onValueChange={(value) => setPriceRange(value as [number, number])}
+                onValueChange={(value) => {
+                  const newPriceRange = value as [number, number];
+                  setPriceRange(newPriceRange);
+                  // Обновляем URL параметры
+                  const params = new URLSearchParams(searchParams);
+                  params.set('price_min', newPriceRange[0].toString());
+                  params.set('price_max', newPriceRange[1].toString());
+                  setSearchParams(params);
+                }}
                 className="my-4"
               />
               <div className="flex items-center justify-between">
@@ -239,7 +291,14 @@ export default function ApiListPage() {
                   min={0}
                   max={5}
                   step={0.5}
-                  onValueChange={(value) => setMinRating(value[0])}
+                  onValueChange={(value) => {
+                    const newRating = value[0];
+                    setMinRating(newRating);
+                    // Обновляем URL параметры
+                    const params = new URLSearchParams(searchParams);
+                    params.set('min_rating', newRating.toString());
+                    setSearchParams(params);
+                  }}
                   className="flex-1 mr-4"
                 />
                 <span className="text-yellow-500 whitespace-nowrap">

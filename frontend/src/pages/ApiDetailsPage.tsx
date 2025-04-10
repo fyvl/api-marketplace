@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import api from '@/api/client';
 import { useCart } from '@/context/CartContext';
 import { Button } from '@/components/ui/button';
@@ -8,7 +7,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 
-// Заглушка для данных API - замените на реальный интерфейс по мере разработки
+// Интерфейс для данных API
 interface ApiDetails {
   id: number;
   name: string;
@@ -29,10 +28,11 @@ interface ApiDetails {
     slug: string;
   }>;
   averageRating: number;
-  plans: Array<{
+  money_types?: Array<{
     id: number;
     unit_of_payment: string;
     price: number;
+    body?: string;
     money_type: {
       id: number;
       types_of_use: string;
@@ -53,53 +53,9 @@ export default function ApiDetailsPage() {
       try {
         setLoading(true);
         
-        // В реальном приложении здесь будет запрос к бэкенду
-        // const response = await api.get(`/apis/${id}`);
-        // setApiDetails(response.data);
-        
-        // Заглушка для разработки
-        setApiDetails({
-          id: Number(id),
-          name: 'Пример API',
-          type: 'REST',
-          protocol: 'HTTPS',
-          version: '1.0',
-          body: 'Подробное описание API. Здесь будет текст о возможностях и применении данного API.',
-          documentation: 'Документация по использованию API: эндпоинты, параметры, примеры ответов.',
-          integration_guide: 'Пошаговое руководство по интеграции API в ваше приложение.',
-          usage_examples: 'Примеры кода для интеграции на различных языках программирования.',
-          creator: {
-            id: 1,
-            username: 'developer1'
-          },
-          categories: [
-            { id: 1, name: 'Аналитика', slug: 'analytics' },
-            { id: 2, name: 'Данные', slug: 'data' }
-          ],
-          averageRating: 4.5,
-          plans: [
-            {
-              id: 1,
-              unit_of_payment: 'месяц',
-              price: 1500,
-              money_type: {
-                id: 1,
-                types_of_use: 'Подписка',
-                description: 'Ежемесячная оплата'
-              }
-            },
-            {
-              id: 2,
-              unit_of_payment: 'запрос',
-              price: 0.5,
-              money_type: {
-                id: 2,
-                types_of_use: 'Pay-per-use',
-                description: 'Оплата за использование'
-              }
-            }
-          ]
-        });
+        // Реальный запрос к API
+        const response = await api.get(`/apis/${id}`);
+        setApiDetails(response.data);
         
         setError(null);
       } catch (err) {
@@ -139,6 +95,37 @@ export default function ApiDetailsPage() {
       </div>
     );
   }
+
+  const renderRating = (rating: number) => {
+    const stars = [];
+    // Преобразуем rating в число, если оно еще не число
+    const numericRating = typeof rating === 'number' ? rating : parseFloat(rating) || 0;
+    
+    const fullStars = Math.floor(numericRating);
+    const hasHalfStar = numericRating % 1 >= 0.5;
+    
+    for (let i = 0; i < fullStars; i++) {
+      stars.push(<span key={`star-${i}`}>★</span>);
+    }
+    
+    if (hasHalfStar) {
+      stars.push(<span key="half-star">☆</span>);
+    }
+    
+    const emptyStars = 5 - stars.length;
+    for (let i = 0; i < emptyStars; i++) {
+      stars.push(<span key={`empty-${i}`}>☆</span>);
+    }
+    
+    return (
+      <div className="flex text-yellow-500">
+        {stars}
+        <span className="ml-1 text-gray-600">({numericRating.toFixed(1)})</span>
+      </div>
+    );
+  };
+
+  const plans = apiDetails.money_types || [];
   
   return (
     <div className="container mx-auto px-4 py-8">
@@ -157,9 +144,7 @@ export default function ApiDetailsPage() {
               <Badge variant="outline">{apiDetails.protocol}</Badge>
               <Badge variant="secondary">v{apiDetails.version}</Badge>
               <div className="text-yellow-500 ml-2">
-                {'★'.repeat(Math.floor(apiDetails.averageRating))}
-                {'☆'.repeat(5 - Math.floor(apiDetails.averageRating))}
-                <span className="text-gray-600 ml-1">({apiDetails.averageRating.toFixed(1)})</span>
+                {renderRating(apiDetails.averageRating!)}
               </div>
             </div>
             <p className="text-gray-600 mb-4">
@@ -182,17 +167,35 @@ export default function ApiDetailsPage() {
             
             <TabsContent value="documentation" className="p-4 bg-white rounded-lg shadow-sm">
               <h2 className="text-xl font-semibold mb-4">Документация</h2>
-              <p>{apiDetails.documentation || 'Документация отсутствует'}</p>
+              <div className="prose max-w-none">
+                {apiDetails.documentation ? (
+                  <div dangerouslySetInnerHTML={{ __html: marked(apiDetails.documentation) }} />
+                ) : (
+                  <p>Документация отсутствует</p>
+                )}
+              </div>
             </TabsContent>
             
             <TabsContent value="integration" className="p-4 bg-white rounded-lg shadow-sm">
               <h2 className="text-xl font-semibold mb-4">Руководство по интеграции</h2>
-              <p>{apiDetails.integration_guide || 'Руководство отсутствует'}</p>
+              <div className="prose max-w-none">
+                {apiDetails.integration_guide ? (
+                  <div dangerouslySetInnerHTML={{ __html: marked(apiDetails.integration_guide) }} />
+                ) : (
+                  <p>Руководство отсутствует</p>
+                )}
+              </div>
             </TabsContent>
             
             <TabsContent value="examples" className="p-4 bg-white rounded-lg shadow-sm">
               <h2 className="text-xl font-semibold mb-4">Примеры использования</h2>
-              <p>{apiDetails.usage_examples || 'Примеры отсутствуют'}</p>
+              <div className="prose max-w-none">
+                {apiDetails.usage_examples ? (
+                  <div dangerouslySetInnerHTML={{ __html: marked(apiDetails.usage_examples) }} />
+                ) : (
+                  <p>Примеры отсутствуют</p>
+                )}
+              </div>
             </TabsContent>
           </Tabs>
         </div>
@@ -200,32 +203,41 @@ export default function ApiDetailsPage() {
         <div className="lg:col-span-1">
           <h2 className="text-xl font-semibold mb-4">Тарифные планы</h2>
           
-          <div className="space-y-4">
-            {apiDetails.plans.map((plan) => (
-              <Card key={plan.id} className="overflow-hidden">
-                <div className="bg-blue-50 p-4 border-b">
-                  <h3 className="font-semibold text-lg">{plan.money_type.types_of_use}</h3>
-                  <p className="text-sm text-gray-600">{plan.money_type.description}</p>
-                </div>
-                <CardContent className="p-4">
-                  <div className="flex justify-between items-center mb-4">
-                    <div>
-                      <p className="text-sm text-gray-600">Цена:</p>
-                      <p className="text-xl font-bold">
-                        {plan.price} ₽ / {plan.unit_of_payment}
-                      </p>
-                    </div>
+          {plans.length > 0 ? (
+            <div className="space-y-4">
+              {plans.map((plan) => (
+                <Card key={plan.id} className="overflow-hidden">
+                  <div className="bg-blue-50 p-4 border-b">
+                    <h3 className="font-semibold text-lg">{plan.money_type.types_of_use}</h3>
+                    <p className="text-sm text-gray-600">{plan.money_type.description}</p>
                   </div>
-                  <Button 
-                    className="w-full" 
-                    onClick={() => handleAddToCart(plan.id)}
-                  >
-                    Добавить в корзину
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                  <CardContent className="p-4">
+                    <div className="flex justify-between items-center mb-4">
+                      <div>
+                        <p className="text-sm text-gray-600">Цена:</p>
+                        <p className="text-xl font-bold">
+                          {plan.price} ₽ / {plan.unit_of_payment}
+                        </p>
+                      </div>
+                    </div>
+                    {plan.body && (
+                      <p className="text-sm text-gray-600 mb-4">{plan.body}</p>
+                    )}
+                    <Button 
+                      className="w-full" 
+                      onClick={() => handleAddToCart(plan.id)}
+                    >
+                      Добавить в корзину
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <Card className="p-4 text-center text-gray-500">
+              <p>Информация о тарифах отсутствует</p>
+            </Card>
+          )}
           
           <div className="mt-6 bg-white p-4 rounded-lg shadow-sm">
             <h3 className="font-semibold mb-2">Категории</h3>
@@ -243,4 +255,19 @@ export default function ApiDetailsPage() {
       </div>
     </div>
   );
+}
+
+// Для отображения markdown в HTML
+function marked(markdown: string): string {
+  // Простая реализация конвертации markdown в HTML
+  // В реальном приложении лучше использовать библиотеку вроде marked.js
+  return markdown
+    .replace(/\n/g, '<br>')
+    .replace(/#{3} (.*?)\n/g, '<h3>$1</h3>')
+    .replace(/#{2} (.*?)\n/g, '<h2>$1</h2>')
+    .replace(/#{1} (.*?)\n/g, '<h1>$1</h1>')
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/```(.*?)```/gs, '<pre><code>$1</code></pre>')
+    .replace(/`(.*?)`/g, '<code>$1</code>');
 }
