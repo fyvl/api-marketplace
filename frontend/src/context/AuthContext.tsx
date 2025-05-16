@@ -1,7 +1,8 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useState, useEffect, ReactNode, useContext } from 'react';
 import api from '@/api/client';
 
-// Типы
+// Обновленные типы
 interface User {
   id: number;
   username: string;
@@ -9,6 +10,8 @@ interface User {
   role: 'developer' | 'customer' | 'admin';
   first_name?: string;
   last_name?: string;
+  phone?: string; // Добавлено поле phone
+  patronymic?: string; // Добавлено поле отчество, если понадобится
 }
 
 interface AuthContextType {
@@ -19,6 +22,7 @@ interface AuthContextType {
   register: (userData: RegisterData) => Promise<void>;
   logout: () => void;
   clearError: () => void;
+  updateUser: (userData: Partial<User>) => void; // Метод для обновления данных пользователя
 }
 
 interface RegisterData {
@@ -116,6 +120,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       });
   };
 
+  // Функция обновления данных пользователя
+  const updateUser = (userData: Partial<User>) => {
+    if (user) {
+      setUser({ ...user, ...userData });
+    }
+  };
+
   // Очистка ошибок
   const clearError = () => setError(null);
 
@@ -128,7 +139,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         login,
         register,
         logout,
-        clearError
+        clearError,
+        updateUser
       }}
     >
       {children}

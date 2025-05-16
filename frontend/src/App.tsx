@@ -14,6 +14,9 @@ import ApiDetailsPage from '@/pages/ApiDetailsPage';
 import CartPage from '@/pages/CartPage';
 import CheckoutPage from '@/pages/CheckoutPage';
 import DashboardPage from '@/pages/DashboardPage';
+import ProfilePage from '@/pages/ProfilePage'; // Используем новую детальную страницу профиля
+import ProfileEditPage from '@/pages/ProfileEditPage';
+import ChangePasswordPage from '@/pages/ChangePasswordPage';
 import DeveloperApisPage from '@/pages/DeveloperApisPage';
 import CreateApiPage from '@/pages/CreateApiPage';
 import NotFoundPage from '@/pages/NotFoundPage';
@@ -59,6 +62,21 @@ function App() {
                 <Route path="/dashboard" element={
                   <ProtectedRoute>
                     <DashboardPage />
+                  </ProtectedRoute>
+                } />
+                <Route path="/profile" element={
+                  <ProtectedRoute>
+                    <ProfilePage />
+                  </ProtectedRoute>
+                } />
+                <Route path="/profile/edit" element={
+                  <ProtectedRoute>
+                    <ProfileEditPage />
+                  </ProtectedRoute>
+                } />
+                <Route path="/profile/password" element={
+                  <ProtectedRoute>
+                    <ChangePasswordPage />
                   </ProtectedRoute>
                 } />
                 

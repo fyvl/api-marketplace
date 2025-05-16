@@ -269,24 +269,27 @@ export default function Header() {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem asChild>
-                    <Link to="/dashboard" className="w-full cursor-pointer">Личный кабинет</Link>
+                    <Link to="/profile" className="w-full">Мой профиль</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/dashboard" className="w-full">Личный кабинет</Link>
                   </DropdownMenuItem>
                   {user.role === 'developer' && (
                     <DropdownMenuItem asChild>
-                      <Link to="/developer/apis" className="w-full cursor-pointer">Мои API</Link>
+                      <Link to="/developer/apis" className="w-full">Мои API</Link>
                     </DropdownMenuItem>
                   )}
                   <DropdownMenuItem asChild>
-                    <Link to="/purchases" className="w-full cursor-pointer">Мои покупки</Link>
+                    <Link to="/purchases" className="w-full">Мои покупки</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link to="/cart" className="w-full cursor-pointer">Корзина</Link>
+                    <Link to="/cart" className="w-full">Корзина</Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={logout} className="cursor-pointer">
+                  <DropdownMenuItem onClick={logout}>
                     Выйти
                   </DropdownMenuItem>
                 </DropdownMenuContent>
-              </DropdownMenu>
+              </DropdownMenu> 
             </div>
           ) : (
             <div className="flex items-center gap-2">

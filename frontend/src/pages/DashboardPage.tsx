@@ -4,6 +4,7 @@ import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import ProfilePage from '@/pages/ProfilePage';
 
 // Заглушка для данных покупок
 interface Purchase {
@@ -374,165 +375,9 @@ export default function DashboardPage() {
           )}
         </TabsContent>
         
-        {/* Вкладка профиля */}
+        {/* Вкладка профиля - Используем обновленный компонент ProfileTab */}
         <TabsContent value="profile">
-          <Card>
-            <CardHeader>
-              <CardTitle>Мой профиль</CardTitle>
-              <CardDescription>Управление личными данными</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-sm text-gray-500">Имя пользователя</p>
-                    <p className="font-medium">{user.username}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Email</p>
-                    <p className="font-medium">{user.email}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Имя</p>
-                    <p className="font-medium">{user.first_name || '-'}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Фамилия</p>
-                    <p className="font-medium">{user.last_name || '-'}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Роль</p>
-                    <p className="font-medium capitalize">{user.role}</p>
-                  </div>
-                </div>
-                
-                <div className="flex space-x-4">
-                  <Button asChild variant="outline">
-                    <Link to="/profile/edit">
-                      Редактировать профиль
-                    </Link>
-                  </Button>
-                  <Button asChild variant="outline">
-                    <Link to="/profile/password">
-                      Сменить пароль
-                    </Link>
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <div className="mt-8 space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Мои платежные методы</CardTitle>
-                <CardDescription>Управление способами оплаты</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex items-center">
-                      <div className="w-10 h-6 bg-blue-100 rounded mr-4 flex items-center justify-center text-blue-800 font-bold">
-                        V
-                      </div>
-                      <div>
-                        <p className="font-medium">Visa ****6789</p>
-                        <p className="text-sm text-gray-500">Истекает: 05/2027</p>
-                      </div>
-                    </div>
-                    <div>
-                      <p className="text-sm bg-green-100 text-green-800 px-2 py-1 rounded">
-                        Основная
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex items-center">
-                      <div className="w-10 h-6 bg-red-100 rounded mr-4 flex items-center justify-center text-red-800 font-bold">
-                        M
-                      </div>
-                      <div>
-                        <p className="font-medium">MasterCard ****4321</p>
-                        <p className="text-sm text-gray-500">Истекает: 12/2025</p>
-                      </div>
-                    </div>
-                    <div>
-                      <Button variant="ghost" size="sm">Сделать основной</Button>
-                    </div>
-                  </div>
-                  
-                  <div className="pt-4">
-                    <Button variant="outline">
-                      Добавить платежный метод
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle>Безопасность</CardTitle>
-                <CardDescription>Настройки безопасности вашего аккаунта</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-medium">Двухфакторная аутентификация</p>
-                      <p className="text-sm text-gray-500">
-                        Добавьте дополнительный уровень защиты к вашему аккаунту
-                      </p>
-                    </div>
-                    <Button variant="outline">Настроить</Button>
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-medium">Активные сессии</p>
-                      <p className="text-sm text-gray-500">
-                        Управление активными сеансами на устройствах
-                      </p>
-                    </div>
-                    <Button variant="outline">Просмотреть</Button>
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-medium">API ключи</p>
-                      <p className="text-sm text-gray-500">
-                        Управление ключами для доступа к API
-                      </p>
-                    </div>
-                    <Button variant="outline">Управление</Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card className="border-red-200">
-              <CardHeader>
-                <CardTitle className="text-red-600">Опасная зона</CardTitle>
-                <CardDescription>
-                  Действия, которые нельзя отменить
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-medium">Удалить аккаунт</p>
-                      <p className="text-sm text-gray-500">
-                        Удаление аккаунта необратимо и приведет к потере всех данных
-                      </p>
-                    </div>
-                    <Button variant="destructive">Удалить аккаунт</Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+          <ProfilePage />
         </TabsContent>
       </Tabs>
     </div>

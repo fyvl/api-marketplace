@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CheckoutController;
 use App\Http\Controllers\Api\MoneyTypeController;
+use App\Http\Controllers\Api\ProfileController; // Контроллер профиля
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\SupportController;
 
@@ -48,8 +49,10 @@ Route::middleware('auth:sanctum')->group(function () {
     // Профиль и аутентификация
     Route::get('/user', [AuthController::class, 'user']);
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::put('/profile', [AuthController::class, 'updateProfile']);
-    Route::put('/password', [AuthController::class, 'updatePassword']);
+    
+    // Изменено: используем ProfileController вместо AuthController для маршрутов профиля
+    Route::put('/profile', [ProfileController::class, 'updateProfile']);
+    Route::put('/password', [ProfileController::class, 'updatePassword']);
     
     // Корзина
     Route::get('/cart', [CartController::class, 'index']);
